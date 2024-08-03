@@ -23,8 +23,8 @@ const router = createBrowserRouter([
       { path: "/tvseries/:id", element: <TVSeries /> },
       { path: "/genre", element: <Home /> },
       { path: "/genre/:id", element: <Genre /> },
-      { path: '/search', element: <SearchResults /> },
-      { path: '/movieDetails/:mediaType/:id', element: <MovieDetailPage /> }, 
+      { path: "/search", element: <SearchResults /> },
+      { path: "/movieDetails/:mediaType/:id", element: <MovieDetailPage /> },
     ],
   },
 ]);

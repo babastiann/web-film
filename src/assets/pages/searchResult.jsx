@@ -1,13 +1,15 @@
 import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import PosterGrid from '../components/Fragments/PosterGrid';
 
 const SearchResults = () => {
+  const location = useLocation();
   const [posters, setPosters] = useState([]);
   const [mediaType, setMediaType] = useState(null); 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [query, setQuery] = useState(new URLSearchParams(window.location.search).get('query'));
+  const query = new URLSearchParams(location.search).get('query');
 
   useEffect(() => {
     const fetchSearchResults = async () => {
@@ -19,7 +21,6 @@ const SearchResults = () => {
           `https://api.themoviedb.org/3/search/multi?api_key=99f07600507647393007b8db8128ab9d&query=${encodeURIComponent(query)}`
         );
 
-       
         const firstResult = response.data.results[0];
         const detectedMediaType = firstResult?.media_type;
 
@@ -45,17 +46,10 @@ const SearchResults = () => {
       setLoading(false);
     };
 
-    fetchSearchResults();
+    if (query) {
+      fetchSearchResults();
+    }
   }, [query]);
-
-  useEffect(() => {
-    const handlePopState = () => {
-      setQuery(new URLSearchParams(window.location.search).get('query'));
-    };
-
-    window.addEventListener('popstate', handlePopState);
-    return () => window.removeEventListener('popstate', handlePopState);
-  }, []);
 
   if (loading) return <div className="py-8 px-10 text-white">Loading...</div>;
   if (error) return <div className="py-8 px-10 text-red-500">{error}</div>;
